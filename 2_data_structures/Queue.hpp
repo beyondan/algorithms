@@ -1,6 +1,5 @@
 #ifndef QUEUE_HPP
 #define QUEUE_HPP
-#endif
 
 #include <vector>
 
@@ -65,3 +64,5 @@ class Queue {
     vector<T> q;
     int h = 0;
 };
+
+#endif // define HPP

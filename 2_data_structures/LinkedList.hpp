@@ -1,6 +1,5 @@
 #ifndef LINKEDLIST_HPP
 #define LINKEDLIST_HPP
-#endif
 
 #include <sstream>
 
@@ -10,9 +9,9 @@ template<class T>
 class LLNode {
     public:
     LLNode<T> *next, *prev;
-    int value;
+    T value;
 
-    LLNode(int x) : next(nullptr), prev(nullptr), value(x) {}
+    LLNode(T x) : next(nullptr), prev(nullptr), value(x) {}
     ~LLNode() {
         if(next) delete next;
         next = nullptr;
@@ -32,7 +31,7 @@ class LinkedList {
         tail = nullptr;
     }
 
-    void insert(int x) {
+    void insert(T x) {
         LLNode<T> *n = new LLNode<T>(x);
         _size++;
 
@@ -50,7 +49,7 @@ class LinkedList {
         tail = n;
     }
 
-    void remove(int x) {
+    void remove(T x) {
         LLNode<T> *n = find(x);
         if(n) {
             _size--;
@@ -72,7 +71,7 @@ class LinkedList {
         }
     }
 
-    LLNode<T> * find(int x) {
+    LLNode<T>* find(T x) {
         LLNode<T> *curr = head;
         while(curr) {
             if(curr->value == x) {
@@ -103,3 +102,5 @@ class LinkedList {
     private:
     int _size=0;
 };
+
+#endif // define HPP

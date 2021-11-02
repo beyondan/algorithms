@@ -1,6 +1,5 @@
 #ifndef STACK_HPP
 #define STACK_HPP
-#endif
 
 #include <sstream>
 #include <stdexcept>
@@ -52,3 +51,5 @@ class Stack {
     private:
     vector<T> s;
 };
+
+#endif // define HPP

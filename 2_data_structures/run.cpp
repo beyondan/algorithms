@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <stdexcept>
+#include <stdlib.h>
 #include <string>
 
 using namespace std;
@@ -137,38 +138,38 @@ void test_linkedlist() {
 }
 
 void test_hashtable() {
-    HashTable<int> ht;
+    HashTable<int> ht(10);
 
     cout << "==== HASH TABLE ====" << endl;
-    cout << "Add 0, 4, 8, 12, ... , 96" << endl;
-    for(int i=0; i<100; i+=4) {
+    for(int i=0; i<100; i++) {
         ht.set(i, i);
     }
-    cout << ht.str() << endl;
+    
+    for(int i=0; i<10; i++) {
+        int rn = rand() % 100;
+        int got = ht.get(rn);
+        if(got != rn) {
+            cout << "Get '" << rn << "' should not return '" << got << "'" << endl;
+            cout << ht.str() << endl;
+            return;
+        }
+    }
 
-    cout << "Get 95" << endl;
+    ht.set(96, 111);
+    if(ht.get(96) != 111) {
+        cout << "Get 96 should return 111" << endl;
+        return;
+    }
+
     try {
-        cout << ht.get(95) << endl;
+        cout << ht.get(99999) << endl;
+        cout << "Get 99999 should error and not print this line." << endl;
+        return;
     }
     catch(out_of_range e) {
-        cout << e.what() << endl;
     }
-
-    cout << "Get 44" << endl;
-    cout << ht.get(44) << endl;
-
-    cout << "Get 96" << endl;
-    cout << ht.get(96) << endl;
-
-    cout << "Get 92" << endl;
-    cout << ht.get(92) << endl;
-
-    cout << "Get 96" << endl;
-    cout << ht.get(96) << endl;
-
-    cout << "Set 96, 111" << endl;
-    ht.set(96, 111);
-    cout << ht.str() << endl;
+    
+    cout << "PASSED" << endl;
 }
 
 int main() {

@@ -1,6 +1,5 @@
 #ifndef HASHTABLE_HPP
 #define HASHTABLE_HPP
-#endif
 
 #include "LinkedList.hpp"
 
@@ -20,81 +19,103 @@ struct HashEntry {
 template<class T>
 class HashTable {
     public:
-    HashTable(int size=10) : size(size) {
-        ht = new LinkedList<HashEntry<T>>[size];
+    HashTable(int size=10) : _size(size) {
+        ht = new LinkedList<HashEntry<T>*>* [size];
+        for(int i=0; i<size; i++) {
+            ht[i] = new LinkedList<HashEntry<T>*>();
+        }
     }
     ~HashTable() {
-        delete[] ht;
+        for(int i=0; i<_size; i++) {
+            delete ht[i];
+        }
+        delete ht;
+        ht = nullptr;
     }
 
     T get(int key) {
-        int k = key % size;
+        int k = key % _size;
         
-        LinkedList<HashEntry<T>> l = ht[k];
-        LLNode* curr = l.head;
+        LinkedList<HashEntry<T>*> *l = ht[k];
+        LLNode<HashEntry<T>*> *curr = l->head;
         
         while(curr) {
-            HashEntry<T> entry = curr->value;
-            if(entry.key == key) {
-                return entry.value;
+            HashEntry<T> *entry = curr->value;
+            if(entry->key == key) {
+                return entry->value;
             }
+            curr = curr->next;
         }
 
         throw out_of_range("Key not found.");
     }
 
     void set(int key, T value) {
-        int k = key % size;
-        HashEntry<T> *newEntry = new HashEntry<T>(key, value);
+        int k = key % _size;
 
-        vector<HashEntry<T>*> v = ht[k];
-        int vsize = v.size();
+        LinkedList<HashEntry<T>*> *l = ht[k];
+        LLNode<HashEntry<T>*> *curr = l->head;
 
-        for(int i=0; i<vsize; i++) {
-            if(v[i]->key == key) {
-                v[i] = newEntry;
+        while(curr) {
+            HashEntry<T> *entry = curr->value;
+            if(entry->key == key) {
+                entry->value = value;
                 return;
             }
+            curr = curr->next;
         }
 
-        cout << "Adding new entry: " << newEntry->key << ", " << newEntry->value << endl;
-        v.push_back(newEntry);
+        l->insert(new HashEntry<T>(key, value));
     }
 
     bool contains(int key) {
-        int k = key % size;
+        int k = key % _size;
 
-        vector<HashEntry<T>*> v = ht[k];
-        int vsize = v.size();
-
-        for(int i=0; i<vsize; i++) {
-            if(v[i]->key == key) {
+        LinkedList<HashEntry<T*>> *l = ht[k];
+        LLNode<HashEntry<T>*> *curr = l->head;
+        
+        while(curr) {
+            HashEntry<T> *entry = curr->value;
+            if(entry->key == key) {
                 return true;
             }
+            curr = curr->next;
         }
+
         return false;
     }
 
     string str() {
         stringstream ss;
-        for(int i=0; i<size; i++) {
-            ss << i << " -> [";
-            vector<HashEntry<T>*> v = ht[i];
-            int vsize = v.size();
-            if(vsize == 0) {
-                ss << "]" << endl;
+        ss << "[" << endl;
+        for(int i=0; i<_size; i++) {
+            ss << "  " << i << " -> [";
+
+            LinkedList<HashEntry<T>*> *l = ht[i];
+            if(l->head == nullptr) {
+                ss << "]" << endl;;
                 continue;
             }
 
-            for(int j=0; j<vsize-1; j++) {
-                ss << "(" << v[j]->key << "," << v[j]->value << "), ";
+            LLNode<HashEntry<T>*> *curr = l->head;
+            while(curr) {
+                HashEntry<T> *entry = curr->value;
+                ss << "(" << entry->key << "," << entry->value << ")";
+                if(curr->next) {
+                    ss << ", ";
+                }
+                curr = curr->next;
             }
-            ss << "(" << v[vsize-1]->key << "," << v[vsize-1]->value << ")]" << endl;
+
+            ss << "]" << endl;
         }
+        ss << "]" << endl;
         return ss.str();
     }
 
     private:
-    int size;
-    LinkedList<HashEntry<T>> ht[];
+    int _size = 10;
+    LinkedList<HashEntry<T>*>* *ht;
 };
+
+#endif // define HPP
