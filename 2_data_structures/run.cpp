@@ -1,4 +1,5 @@
 
+#include "BST.hpp"
 #include "HashTable.hpp"
 #include "LinkedList.hpp"
 #include "Queue.hpp"
@@ -172,11 +173,29 @@ void test_hashtable() {
     cout << "PASSED" << endl;
 }
 
+void test_bst() {
+    cout << "==== BST ====" << endl;
+    BST<int> bst;
+
+    bst.insert(4);
+    bst.insert(2);
+    bst.insert(6);
+    bst.insert(1);
+    bst.insert(3);
+    bst.insert(5);
+    bst.insert(7);
+
+    cout << "Pre: " << bst.preorder() << endl;
+    cout << "In: " << bst.inorder() << endl;
+    cout << "Post: " << bst.postorder() << endl;
+}
+
 int main() {
     test_stack();
     test_queue();
     test_linkedlist();
     test_hashtable();
+    test_bst();
 
     return 0;
 }
