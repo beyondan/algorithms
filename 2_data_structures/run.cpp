@@ -188,6 +188,13 @@ void test_bst() {
     cout << "Pre: " << bst.preorder() << endl;
     cout << "In: " << bst.inorder() << endl;
     cout << "Post: " << bst.postorder() << endl;
+
+    if(!bst.contains(5)) {
+        cerr << "Failed: Should contain 5." << endl;
+    }
+    if(bst.contains(10)) {
+        cerr << "Failed: Should not contain 10." << endl;
+    }
 }
 
 int main() {

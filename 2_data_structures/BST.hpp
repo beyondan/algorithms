@@ -66,14 +66,38 @@ class BST {
         return ss.str();
     }
 
+    T min() {
+        return _min(root);
+    }
+
+    T max() {
+        return _max(root);
+    }
+
+    BSTNode<T>* successor(BSTNode *n) {
+        if(n->right) {
+            return _min(n->right);
+        }
+        BSTNode *curr = n;
+        BSTNode<T> *p = n->parent;
+        while(p && curr == p->right) {
+            curr = p;
+            p = p->parent;
+        }
+        return p;
+    }
+
     private:
 
     bool _contains(BSTNode<T> *n, T value) {
         if(!n) return false;
-        if(n->value == value) return true;
-        if(_contains(n->left)) return true;
-        if(_contains(n->right)) return true;
-        return false;
+        if(value < n->value) {
+            return _contains(n->left, value);
+        }
+        if(value > n->value) {
+            return _contains(n->right, value);   
+        }
+        return true;
     }
 
     void _preorder(BSTNode<T> *n, stringstream &ss) {
@@ -133,7 +157,21 @@ class BST {
         }
     }
 
-    private:
+    T _min(BSTNode<T> *n) {
+        BSTNode<T> *curr = n;
+        while(curr->left) {
+            curr = curr->left;
+        }
+        return curr->value;
+    }
+
+    T _max(BSTNode<T> *n) {
+        BSTNode<T> *curr = n;
+        while(curr->right) {
+            curr = curr->right;
+        }
+        return curr->value;
+    }
     int _size = 0;
 };
 
