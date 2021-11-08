@@ -195,6 +195,29 @@ void test_bst() {
     if(bst.contains(10)) {
         cerr << "Failed: Should not contain 10." << endl;
     }
+    int min = bst.min();
+    if(min != 1) {
+        cerr << "Failed: min should not be " << min << endl;
+    }
+    int max = bst.max();
+    if(max != 7) {
+        cerr << "Failed: max should not be " << max << endl;
+    }
+
+    BSTNode<int> *successor = bst.successor(bst.root);
+    if(successor->value != 5) {
+        cerr << "Failed: successor of 4 should not be " << successor << endl;
+    }
+
+    successor = bst.successor(bst.root->right);
+    if(successor->value != 7) {
+        cerr << "Failed: successor of 6 should not be " << max << endl;
+    }
+
+    successor = bst.successor(bst.root->right->right);
+    if(successor != nullptr) {
+        cerr << "Failed: successor of 6 should not be " << max << endl;
+    }
 }
 
 int main() {

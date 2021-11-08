@@ -67,18 +67,18 @@ class BST {
     }
 
     T min() {
-        return _min(root);
+        return _min(root)->value;
     }
 
     T max() {
-        return _max(root);
+        return _max(root)->value;
     }
 
-    BSTNode<T>* successor(BSTNode *n) {
+    BSTNode<T>* successor(BSTNode<T> *n) {
         if(n->right) {
             return _min(n->right);
         }
-        BSTNode *curr = n;
+        BSTNode<T> *curr = n;
         BSTNode<T> *p = n->parent;
         while(p && curr == p->right) {
             curr = p;
@@ -157,20 +157,20 @@ class BST {
         }
     }
 
-    T _min(BSTNode<T> *n) {
+    BSTNode<T>* _min(BSTNode<T> *n) {
         BSTNode<T> *curr = n;
         while(curr->left) {
             curr = curr->left;
         }
-        return curr->value;
+        return curr;
     }
 
-    T _max(BSTNode<T> *n) {
+    BSTNode<T>* _max(BSTNode<T> *n) {
         BSTNode<T> *curr = n;
         while(curr->right) {
             curr = curr->right;
         }
-        return curr->value;
+        return curr;
     }
     int _size = 0;
 };
